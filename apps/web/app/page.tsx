@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSocket } from "./context/socketProvider";
 
 export default function Page() {
-  const { sendMessage } = useSocket();
+  const { sendMessage, messages } = useSocket();
   const [message, setMessage] = useState("");
 
   return (
@@ -13,6 +13,11 @@ export default function Page() {
         <h1 className="text-3xl font-bold text-[#fff] text-center">
           All Messages will Appear Here
         </h1>
+        <div>
+          {messages.map((msg) => (
+            <h3 className="text-2xl font-bold text-[#fff]" key={msg}>{msg}</h3>
+          ))}
+        </div>
       </div>
       <form className="w-[100vw] fixed bottom-10 flex justify-center items-center gap-[1rem]">
         <input
