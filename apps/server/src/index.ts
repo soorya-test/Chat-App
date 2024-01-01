@@ -5,7 +5,7 @@ async function init() {
   const sockerService = new SocketService();
 
   const httpServer = http.createServer();
-  const PORT = process.env.PORT ?? 6000;
+  const PORT = process.env.PORT ?? 8000;
 
   sockerService.io.attach(httpServer);
 
