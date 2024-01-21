@@ -1,5 +1,9 @@
 import { Server } from "socket.io";
 import Redis from "ioredis";
+
+import prismaClient from "./prisma";
+import { produceMessage } from "./kafka";
+
 const dotenv = require("dotenv").config();
 
 const host = process.env.REDIS_HOST;
@@ -48,9 +52,20 @@ class SocketService {
       });
     });
 
-    sub.on("message", (channel, message) => {
+    sub.on("message", async (channel, message) => {
       if (channel === "MESSAGES") {
         io.emit("message", message);
+
+        // Kafka Approach
+        await produceMessage(JSON.parse(message).message);
+        console.log("Message Produced to Kafka");
+
+        // Add DB
+        // await prismaClient.message.create({
+        //   data: {
+        //     text: JSON.parse(message).message,
+        //   },
+        // });
       }
     });
   }
